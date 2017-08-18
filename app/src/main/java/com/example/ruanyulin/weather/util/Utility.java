@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import com.example.ruanyulin.weather.db.City;
 import com.example.ruanyulin.weather.db.County;
 import com.example.ruanyulin.weather.db.Province;
+import com.example.ruanyulin.weather.gson.Weather;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,12 +68,7 @@ public class Utility {
         return false;
     }
 
-    /**
-     * 解析县级数据
-     * @param response
-     * @param cityId
-     * @return
-     */
+
     public static boolean handleCountyResponse(String response,int cityId) {
         if (!TextUtils.isEmpty(response)){
             try {
@@ -90,5 +87,23 @@ public class Utility {
             }
         }
         return false;
+    }
+
+    /**
+     * 将返回的JSON数据解析成Weather实体类
+     */
+    public static Weather handleWeatherResponse(String response) {
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
+            String weathercontent = jsonArray.getJSONObject(0).toString();
+            return new Gson().fromJson(weathercontent,Weather.class);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+
     }
 }

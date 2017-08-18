@@ -2,6 +2,7 @@ package com.example.ruanyulin.weather;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 //import android.support.annotation.RequiresApi;
@@ -80,6 +81,16 @@ public class ChooseAreaFragment extends Fragment {
                 } else if (currentLevel == LEVEL_CITY) {
                     selectCity = cityList.get(i);
                     queryCounties();
+                } else if (currentLevel == LEVEL_COUNTY) {
+                    //currentLevel = 0;
+                    final int flag = 1;
+                    String weatherId = countyList.get(i).getWeatherId();
+                    Intent intent = new Intent(getActivity(),WeatherActivity.class);
+                    intent.putExtra("weather_id",weatherId);
+                    intent.putExtra("flag",flag);
+                    startActivity(intent);
+                    getActivity().finish();
+
                 }
             }
         });
