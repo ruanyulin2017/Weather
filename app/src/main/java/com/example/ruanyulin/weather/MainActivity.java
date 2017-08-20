@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    private int flag = 0;
+    private int flag;
     SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getFlag(){
-       flag = getIntent().getIntExtra("flag",this.flag);
+       flag = getIntent().getIntExtra("flag",0);
 
     }
 }

@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/degreetext"
-        android:layout_gravity="end"
+        android:layout_gravity="center"
         android:textColor="#fff"
         android:textSize="60sp"/>
 
@@ -17,8 +17,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/weatherinfotext"
-        android:layout_gravity="end"
+        android:layout_gravity="center"
         android:textSize="20sp"
+        android:textColor="#fff"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/warntext"
         android:textColor="#fff"/>
 
 
