@@ -12,10 +12,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.ruanyulin.weather.db.City;
 import com.example.ruanyulin.weather.db.County;
 import com.example.ruanyulin.weather.db.Province;
@@ -56,6 +58,9 @@ public class ChooseAreaFragment extends Fragment {
     private int currentLevel;
 
     private View view;
+    private ImageView imageView;
+
+    private String biying = "http://api.dujin.org/bing/1366.php";
 
     //@RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -64,8 +69,10 @@ public class ChooseAreaFragment extends Fragment {
         titletext = (TextView) view.findViewById(R.id.titletext);
         backbutton = (Button) view.findViewById(R.id.backbutton);
         listView = (ListView) view.findViewById(R.id.listview);
+        imageView = (ImageView) view.findViewById(R.id.chooseimg);
         adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,datalist);
         listView.setAdapter(adapter);
+        Glide.with(this).load(biying).into(imageView);
         return view;
     }
 

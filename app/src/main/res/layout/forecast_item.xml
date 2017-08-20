@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_weight="6"
         android:layout_gravity="center_vertical"
         android:id="@+id/datetext"
         android:textColor="#fff"/>
@@ -15,7 +15,7 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="5"
         android:id="@+id/infotext"
         android:gravity="center"
         android:textColor="#fff"
@@ -24,19 +24,12 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="5"
         android:id="@+id/maxtext"
         android:gravity="right"
         android:textColor="#fff"
         android:layout_gravity="center_vertical"/>
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:id="@+id/mintext"
-        android:gravity="right"
-        android:textColor="#fff"
-        android:layout_gravity="center_vertical"/>
+
 
 </LinearLayout>
