@@ -1,5 +1,6 @@
 package com.example.ruanyulin.weather;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -34,7 +35,7 @@ import okhttp3.Response;
 
 public class WeatherActivity extends AppCompatActivity {
 
-    private String biying = "http://api.dujin.org/bing/1366.php";
+    public String biying = "http://api.dujin.org/bing/1366.php";
 
     private String key = "e81f465dab6a4784af188af62565fc38";
 
@@ -51,6 +52,14 @@ public class WeatherActivity extends AppCompatActivity {
     private TextView comforttext;
     private TextView carwashtext;
     private TextView sporttext;
+
+    private TextView life1;
+    private TextView life2;
+    private TextView life3;
+    private TextView life4;
+    private TextView life5;
+    private TextView life6;
+
 
     private Button selectcity;
 
@@ -75,6 +84,13 @@ public class WeatherActivity extends AppCompatActivity {
             decorview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
+
+        life1 = (TextView) findViewById(R.id.lifetext1);
+        life2 = (TextView) findViewById(R.id.lifetext2);
+        life3 = (TextView) findViewById(R.id.lifetext3);
+        life4 = (TextView) findViewById(R.id.lifetext4);
+        life5 = (TextView) findViewById(R.id.lifetext5);
+        life6 = (TextView) findViewById(R.id.lifetext6);
 
         warn1 = (TextView)findViewById(R.id.warntext1);
 
@@ -119,8 +135,9 @@ public class WeatherActivity extends AppCompatActivity {
         String weatherString = preferences.getString("weather",null);
 
         String weatherId = null;
-        Glide.with(this).load(biying).into(bingimg1);
+
         Glide.with(this).load(biying).into(bingimg);
+        Glide.with(this).load(biying).into(bingimg1);
         //weatherId = getIntent().getStringExtra("weather_id");
        /* Weather weather = Utility.handleWeatherResponse(weatherString);
         weatherId = weather.basic.weatherId;
@@ -162,7 +179,7 @@ public class WeatherActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(WeatherActivity.this,"获取天气信息失败1",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WeatherActivity.this,"请选择城市",Toast.LENGTH_SHORT).show();
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 });
@@ -192,6 +209,7 @@ public class WeatherActivity extends AppCompatActivity {
             }
         });
 
+
         //loadBingPic();
     }
 
@@ -206,6 +224,9 @@ public class WeatherActivity extends AppCompatActivity {
         degreetext.setText(degree);
         weatherinfotext.setText(weatherinfo);
 
+        life1.setText("出门指数");
+        life3.setText("穿衣指数");
+        life5.setText("运动指数");
         forecastlayout.removeAllViews();
         //获取日期
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -214,11 +235,28 @@ public class WeatherActivity extends AppCompatActivity {
 
         if (Integer.parseInt(degree1) < 10) {
             warn.setText("天气寒冷，请注意保暖");
+            life4.setText("宜穿冬衣");
         } else if (Integer.parseInt(degree1) >= 10 &&Integer.parseInt(degree1) <= 30) {
             warn.setText("天气很舒适");
+            life4.setText("宜穿秋衣");
         } else
         if (Integer.parseInt(degree1) > 30) {
             warn.setText("气温炎热，请注意避暑");
+            life4.setText("宜穿夏衣");
+        }
+
+        if (weatherinfo.indexOf("雨") != -1) {
+            life2.setText("不宜出门");
+            life6.setText("不宜运动");
+        } else if (weatherinfo.indexOf("晴") != -1) {
+            life2.setText("注意防晒");
+            life6.setText("不宜运动");
+        } else if (weatherinfo.indexOf("多云") != -1) {
+            life1.setText("适合出门");
+            life6.setText("适合运动");
+        } else if (weatherinfo.indexOf("阴") != -1) {
+            life2.setText("适宜出门");
+            life6.setText("适宜运动");
         }
         int i = 0;
         for (Forecast forecast : weather.forecastList){

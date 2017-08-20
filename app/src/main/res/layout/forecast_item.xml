@@ -10,7 +10,7 @@
         android:layout_weight="6"
         android:layout_gravity="center_vertical"
         android:id="@+id/datetext"
-        android:textColor="#fff"/>
+        android:textColor="@color/white"/>
 
     <TextView
         android:layout_width="0dp"
@@ -18,7 +18,7 @@
         android:layout_weight="5"
         android:id="@+id/infotext"
         android:gravity="center"
-        android:textColor="#fff"
+        android:textColor="@color/white"
         android:layout_gravity="center_vertical"/>
 
     <TextView
@@ -27,7 +27,7 @@
         android:layout_weight="5"
         android:id="@+id/maxtext"
         android:gravity="right"
-        android:textColor="#fff"
+        android:textColor="@color/white"
         android:layout_gravity="center_vertical"/>
 
 

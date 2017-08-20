@@ -35,6 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/bingimg1"
+
             android:scaleType="centerCrop"/>
         <android.support.v4.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
@@ -55,7 +56,7 @@
                     android:orientation="vertical"
                     android:fitsSystemWindows="true">
 
-
+                    <include layout="@layout/life_suggestion"/>
                     <include layout="@layout/now"/>
                     <include layout="@layout/forecast"/>
                     <include layout="@layout/api"/>

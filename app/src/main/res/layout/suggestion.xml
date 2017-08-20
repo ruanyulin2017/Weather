@@ -20,20 +20,20 @@
         android:layout_height="wrap_content"
         android:id="@+id/comfortinfo"
         android:layout_margin="15dp"
-        android:textColor="#fff"/>
+        android:textColor="@color/white"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/carwashtext"
         android:layout_margin="15dp"
-        android:textColor="#fff"/>
+        android:textColor="@color/white"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/sporttext"
         android:layout_margin="15dp"
-        android:textColor="#fff"/>
+        android:textColor="@color/white"/>
 
 </LinearLayout>

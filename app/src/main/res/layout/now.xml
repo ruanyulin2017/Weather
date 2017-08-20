@@ -19,13 +19,13 @@
         android:id="@+id/weatherinfotext"
         android:layout_gravity="center"
         android:textSize="20sp"
-        android:textColor="#fff"/>
+        android:textColor="@color/white"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:id="@+id/warntext"
-        android:textColor="#fff"/>
+        android:textColor="@color/white"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
         android:layout_gravity="center"
         android:textSize="16sp"
         android:id="@+id/warntext1"
-        android:textColor="#fff"/>
+        android:textColor="@color/white"/>
 
 
 </LinearLayout>
