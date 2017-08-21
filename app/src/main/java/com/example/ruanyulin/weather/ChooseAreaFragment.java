@@ -3,6 +3,7 @@ package com.example.ruanyulin.weather;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 //import android.support.annotation.RequiresApi;
@@ -18,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
+import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.example.ruanyulin.weather.db.City;
 import com.example.ruanyulin.weather.db.County;
 import com.example.ruanyulin.weather.db.Province;
@@ -30,9 +33,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.wasabeef.glide.transformations.BlurTransformation;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+
 
 /**
  * Created by ruanyulin on 17-8-17.
@@ -58,27 +63,23 @@ public class ChooseAreaFragment extends Fragment {
     private int currentLevel;
 
     private View view;
-    private ImageView imageView;
 
-    private String biying = "http://api.dujin.org/bing/1366.php";
 
-    //@RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle save) {
         view = inflater.inflate(R.layout.choose_area,container,false);
         titletext = (TextView) view.findViewById(R.id.titletext);
         backbutton = (Button) view.findViewById(R.id.backbutton);
         listView = (ListView) view.findViewById(R.id.listview);
-        imageView = (ImageView) view.findViewById(R.id.chooseimg);
         adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,datalist);
         listView.setAdapter(adapter);
-        Glide.with(this).load(biying).into(imageView);
         return view;
     }
 
     @Override
     public void onActivityCreated(Bundle save) {
         super.onActivityCreated(save);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -89,23 +90,11 @@ public class ChooseAreaFragment extends Fragment {
                     selectCity = cityList.get(i);
                     queryCounties();
                 } else if (currentLevel == LEVEL_COUNTY) {
-                    if (getActivity() instanceof MainActivity){
-                        final int flag = 1;
-                        String weatherId = countyList.get(i).getWeatherId();
-                        Intent intent = new Intent(getActivity(),WeatherActivity.class);
-                        intent.putExtra("weather_id",weatherId);
-                        intent.putExtra("flag",flag);
-                        startActivity(intent);
-                    } else if (getActivity() instanceof WeatherActivity){
-                        WeatherActivity weatherActivity = (WeatherActivity) getActivity();
+                    WeatherActivity weatherActivity = (WeatherActivity) getActivity();
                         weatherActivity.drawerLayout.closeDrawers();
                         weatherActivity.swipeRefreshLayout.setRefreshing(true);
                         String weatherId = countyList.get(i).getWeatherId();
                         weatherActivity.requestWeather(weatherId);
-                    }
-
-                    //getActivity().finish();
-
                 }
             }
         });

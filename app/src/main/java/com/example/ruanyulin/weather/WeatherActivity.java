@@ -23,15 +23,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.ruanyulin.weather.gson.Forecast;
 import com.example.ruanyulin.weather.gson.Weather;
 import com.example.ruanyulin.weather.util.Http;
 import com.example.ruanyulin.weather.util.Utility;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import jp.wasabeef.glide.transformations.BlurTransformation;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -45,7 +48,7 @@ public class WeatherActivity extends AppCompatActivity {
     private String weatherUrl = "http://guolin.tech/api/weather?cityid=";
 
     private ScrollView scrollView;
-    private TextView titlecity;
+    public TextView titlecity;
     private TextView titleupdatetime;
     private TextView degreetext;
     private TextView weatherinfotext;
@@ -56,12 +59,20 @@ public class WeatherActivity extends AppCompatActivity {
     private TextView carwashtext;
     private TextView sporttext;
 
+    private TextView aqitext1;
+    private TextView aqitext2;
+    private TextView aqitext3;
+
+    private TextView suggest1;
+
+
     private TextView life1;
     private TextView life2;
     private TextView life3;
     private TextView life4;
     private TextView life5;
     private TextView life6;
+    private TextView forcast;
 
 
     private Button selectcity;
@@ -70,6 +81,8 @@ public class WeatherActivity extends AppCompatActivity {
     private ImageView bingimg;
 
     private ImageView bingimg1;
+
+    private ImageView imageView;
     public SwipeRefreshLayout swipeRefreshLayout;
 
     private TextView warn;
@@ -96,6 +109,13 @@ public class WeatherActivity extends AppCompatActivity {
         life5 = (TextView) findViewById(R.id.lifetext5);
         life6 = (TextView) findViewById(R.id.lifetext6);
 
+        aqitext1 = (TextView) findViewById(R.id.aqitext);
+        aqitext2 = (TextView) findViewById(R.id.aqitext1);
+        aqitext3 = (TextView) findViewById(R.id.pm25text1);
+
+        suggest1 = (TextView) findViewById(R.id.suggest1);
+
+        forcast = (TextView) findViewById(R.id.forecast);
         warn1 = (TextView)findViewById(R.id.warntext1);
 
         warn = (TextView) findViewById(R.id.warntext);
@@ -114,14 +134,17 @@ public class WeatherActivity extends AppCompatActivity {
         carwashtext = (TextView) findViewById(R.id.carwashtext);
         sporttext = (TextView) findViewById(R.id.sporttext);
 
+        bingimg = (ImageView) findViewById(R.id.bingimg);
+        bingimg1 = (ImageView) findViewById(R.id.bingimg1);
+        imageView = (ImageView) findViewById(R.id.chooseimg);
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
 
+        glideimg();
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
 
-        bingimg = (ImageView) findViewById(R.id.bingimg);
 
-        bingimg1 = (ImageView) findViewById(R.id.bingimg1);
 
         selectcity.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,39 +164,37 @@ public class WeatherActivity extends AppCompatActivity {
 
         String weatherId = null;
 
-        Glide.with(this).load(biying).into(bingimg);
-        Glide.with(this).load(biying).into(bingimg1);
-        //weatherId = getIntent().getStringExtra("weather_id");
-       /* Weather weather = Utility.handleWeatherResponse(weatherString);
-        weatherId = weather.basic.weatherId;
-        if (weatherId != null){
-            weatherId = weather.basic.weatherId;
-            requestWeather(weatherId);
-        }
-        */
-        //scrollView.setVisibility(View.INVISIBLE);
-        //requestWeather(weatherId);
-        bingimg.setImageAlpha(100);
-        bingimg1.setImageAlpha(100);
+        //bingimg.setImageAlpha(100);
+        bingimg1.setImageAlpha(150);
 
-        if (weatherString != null){
+
+        if (weatherString != null ){
             Weather weather = Utility.handleWeatherResponse(weatherString);
             weatherId = weather.basic.weatherId;
+            //Toast.makeText(WeatherActivity.this,"not",Toast.LENGTH_SHORT).show();
             requestWeather(weatherId);
-            //showWeatherInfo(weather);
-        } else {
-            weatherId = getIntent().getStringExtra("weather_id");
-            scrollView.setVisibility(View.INVISIBLE);
-            requestWeather(weatherId);
+
+        } else {//首次打开应用显示北京天气
+            requestWeather("CN101010100");
+            //Toast.makeText(WeatherActivity.this,"diyic",Toast.LENGTH_SHORT).show();
+
         }
-        final String finalWeatherId = weatherId;
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                requestWeather(finalWeatherId);
+                String weaId;
+                SharedPreferences preferences1 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                String weatherString1 = preferences1.getString("weather",null);
+                if (weatherString1 != null ){
+                    Weather weather = Utility.handleWeatherResponse(weatherString1);
+                    weaId = weather.basic.weatherId;
+                    requestWeather(weaId);
+
+                }
             }
         });
     }
+
 
     /**
      * 根据天气id请求城市天气信息
@@ -187,7 +208,7 @@ public class WeatherActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(WeatherActivity.this,"请选择城市",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WeatherActivity.this,"获取天气信息失败",Toast.LENGTH_SHORT).show();
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 });
@@ -210,20 +231,26 @@ public class WeatherActivity extends AppCompatActivity {
                             showWeatherInfo(weather);
                             Toast.makeText(WeatherActivity.this,"天气更新成功",Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(WeatherActivity.this,"获取天气信息失败",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(WeatherActivity.this,"获取天气信息失败",Toast.LENGTH_SHORT).show();
+
+
                         }
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 });
             }
         });
-
-
-        //loadBingPic();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void showWeatherInfo(Weather weather) {
+        if (weather != null) {
+
+            forcast.setText("未来几天天气预报");
+            aqitext1.setText("空气质量");
+            aqitext2.setText("空气指数");
+            aqitext3.setText("pm2.5");
+            suggest1.setText("生活小贴士");
         String cityname = weather.basic.cityName;
         String updatetime = weather.basic.update.updateTime.split(" ")[1];
         String degree = weather.now.temperature + "℃";
@@ -244,11 +271,10 @@ public class WeatherActivity extends AppCompatActivity {
         warn.setTextSize(14);
         warn1.setTextSize(14);
         life1.setTextSize(15);
-        //life1.setTextColor(getColor(R.color.white1));
+
         life3.setTextSize(15);
         life5.setTextSize(15);
 
-        //life2.setHintTextColor(getColor(R.color.white1));
         life1.setText("出门指数");
         life3.setText("穿衣指数");
         life5.setText("运动指数");
@@ -265,7 +291,7 @@ public class WeatherActivity extends AppCompatActivity {
             warn.setText("天气很舒适");
             life4.setText("宜穿秋衣");
         } else
-        if (Integer.parseInt(degree1) > 30) {
+        if (Integer.parseInt(degree1) > 30 ) {
             if (Integer.parseInt(degree1) > 37) {
                 warn.setTextColor(getColor(R.color.red));
                 warn1.setTextColor(getColor(R.color.red));
@@ -297,10 +323,10 @@ public class WeatherActivity extends AppCompatActivity {
             TextView infotext  = (TextView) view.findViewById(R.id.infotext);
             TextView maxtext = (TextView) view.findViewById(R.id.maxtext);
             date = simpleDateFormat.format(calendar.getTime());
-            if (date.equals(forecast.date) ) {
+            if (i== 0) {
                 datetext.setText("今天" + "(" + forecast.date +")");
                 if (forecast.more.info.indexOf("晴") != -1) {
-                    //warn1.setText("今天晴天，出门请注意防晒");
+                    warn1.setText("今天晴天，出门请注意防晒");
                 } else if (forecast.more.info.indexOf("雨") != -1) {
                     warn1.setText("今天下雨，出门请带伞");
                 } else if (forecast.more.info.indexOf("阴") != -1) {
@@ -325,24 +351,29 @@ public class WeatherActivity extends AppCompatActivity {
         String comfort = "舒适度:\n" + weather.suggestion.sport.info;
         String carwash = "洗车指数:\n" + weather.suggestion.carWash.info;
         String sport = "运动指数:\n" + weather.suggestion.sport.info;
-        /*
-        TextPaint comfor = comforttext.getPaint();
-        comfor.setFakeBoldText(true);
-        TextPaint car = carwashtext.getPaint();
-        car.setFakeBoldText(true);
-        TextPaint spo = sporttext.getPaint();
-        spo.setFakeBoldText(true);
-        */
+
         comforttext.setText(comfort);
         carwashtext.setText(carwash);
         sporttext.setText(sport);
-        //scrollView.setVisibility(View.VISIBLE);
+        }
+    }
 
-        Glide.with(this).load(biying).into(bingimg);
-        Glide.with(this).load(biying).into(bingimg1);
-        float al = (float) 0.5;
-        //bingimg.setImageAlpha(100);
-        //bingimg1.setImageAlpha(70);
-        //Toast.makeText(this,"img",Toast.LENGTH_SHORT).show();
+    protected void glideimg(){
+
+        long time = System.currentTimeMillis();
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        if (hour < 10) {
+            Glide.get(this).clearMemory();
+            Glide.get(this).clearDiskCache();
+        }
+
+        //choose、title、weather
+        Glide.with(this).load(biying).bitmapTransform(new BlurTransformation(WeatherActivity.this,20)).into(imageView);
+        Glide.with(this).load(biying).bitmapTransform(new BlurTransformation(WeatherActivity.this,30)).into(bingimg);
+        Glide.with(this).load(biying).bitmapTransform(new BlurTransformation(WeatherActivity.this,15)).into(bingimg1);
+
+
     }
 }
