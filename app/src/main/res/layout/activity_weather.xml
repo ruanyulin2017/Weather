@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="?attr/colorPrimary"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
+
     tools:context="com.example.ruanyulin.weather.WeatherActivity">
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer"
@@ -54,10 +55,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:divider="@color/divier"
+                    android:showDividers="middle"
+                    android:dividerPadding="15dp"
                     android:fitsSystemWindows="true">
 
-                    <include layout="@layout/life_suggestion"/>
+
                     <include layout="@layout/now"/>
+                    <include layout="@layout/life_suggestion"/>
                     <include layout="@layout/forecast"/>
                     <include layout="@layout/api"/>
                     <include layout="@layout/suggestion"/>

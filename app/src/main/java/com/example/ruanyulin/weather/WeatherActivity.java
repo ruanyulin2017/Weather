@@ -5,11 +5,13 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.annotation.RequiresApi;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -148,6 +150,9 @@ public class WeatherActivity extends AppCompatActivity {
         */
         //scrollView.setVisibility(View.INVISIBLE);
         //requestWeather(weatherId);
+        bingimg.setImageAlpha(100);
+        bingimg1.setImageAlpha(100);
+
         if (weatherString != null){
             Weather weather = Utility.handleWeatherResponse(weatherString);
             weatherId = weather.basic.weatherId;
@@ -191,6 +196,7 @@ public class WeatherActivity extends AppCompatActivity {
                 final String responsetext = response.body().string();
                 final Weather weather = Utility.handleWeatherResponse(responsetext);
                 runOnUiThread(new Runnable() {
+                    @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
                     public void run() {
                         if (weather != null && "ok".equals(weather.status)) {
@@ -213,6 +219,7 @@ public class WeatherActivity extends AppCompatActivity {
         //loadBingPic();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void showWeatherInfo(Weather weather) {
         String cityname = weather.basic.cityName;
         String updatetime = weather.basic.update.updateTime.split(" ")[1];
@@ -224,6 +231,21 @@ public class WeatherActivity extends AppCompatActivity {
         degreetext.setText(degree);
         weatherinfotext.setText(weatherinfo);
 
+        TextPaint paint1 = life1.getPaint();
+        paint1.setFakeBoldText(true);
+        TextPaint paint3 = life3.getPaint();
+        paint3.setFakeBoldText(true);
+        TextPaint paint5 = life5.getPaint();
+        paint5.setFakeBoldText(true);
+        //字体
+        warn.setTextSize(14);
+        warn1.setTextSize(14);
+        life1.setTextSize(15);
+        //life1.setTextColor(getColor(R.color.white1));
+        life3.setTextSize(15);
+        life5.setTextSize(15);
+
+        //life2.setHintTextColor(getColor(R.color.white1));
         life1.setText("出门指数");
         life3.setText("穿衣指数");
         life5.setText("运动指数");
@@ -241,6 +263,13 @@ public class WeatherActivity extends AppCompatActivity {
             life4.setText("宜穿秋衣");
         } else
         if (Integer.parseInt(degree1) > 30) {
+            if (Integer.parseInt(degree1) > 37) {
+                warn.setTextColor(getColor(R.color.red));
+                warn1.setTextColor(getColor(R.color.red));
+                warn1.setText("高温预警");
+                titlecity.setTextColor(getColor(R.color.red));
+                degreetext.setTextColor(getColor(R.color.red));
+            }
             warn.setText("气温炎热，请注意避暑");
             life4.setText("宜穿夏衣");
         }
@@ -252,7 +281,7 @@ public class WeatherActivity extends AppCompatActivity {
             life2.setText("注意防晒");
             life6.setText("不宜运动");
         } else if (weatherinfo.indexOf("多云") != -1) {
-            life1.setText("适合出门");
+            life2.setText("适合出门");
             life6.setText("适合运动");
         } else if (weatherinfo.indexOf("阴") != -1) {
             life2.setText("适宜出门");
@@ -268,13 +297,13 @@ public class WeatherActivity extends AppCompatActivity {
             if (date.equals(forecast.date) ) {
                 datetext.setText("今天" + "(" + forecast.date +")");
                 if (forecast.more.info.indexOf("晴") != -1) {
-                    warn1.setText("今天晴天，出门请注意防晒");
+                    //warn1.setText("今天晴天，出门请注意防晒");
                 } else if (forecast.more.info.indexOf("雨") != -1) {
                     warn1.setText("今天下雨，出门请带伞");
                 } else if (forecast.more.info.indexOf("阴") != -1) {
                     warn1.setText("今天阴天，适合出门");
                 } else if (forecast.more.info.indexOf("多云") != -1) {
-                    warn1.setText("今天多云");
+                    //warn1.setText("今天多云");
                 }
             } else if (i == 1){
                 datetext.setText("明天" + "(" + forecast.date +")");
@@ -293,12 +322,24 @@ public class WeatherActivity extends AppCompatActivity {
         String comfort = "舒适度:\n" + weather.suggestion.sport.info;
         String carwash = "洗车指数:\n" + weather.suggestion.carWash.info;
         String sport = "运动指数:\n" + weather.suggestion.sport.info;
+        /*
+        TextPaint comfor = comforttext.getPaint();
+        comfor.setFakeBoldText(true);
+        TextPaint car = carwashtext.getPaint();
+        car.setFakeBoldText(true);
+        TextPaint spo = sporttext.getPaint();
+        spo.setFakeBoldText(true);
+        */
         comforttext.setText(comfort);
         carwashtext.setText(carwash);
         sporttext.setText(sport);
-        scrollView.setVisibility(View.VISIBLE);
+        //scrollView.setVisibility(View.VISIBLE);
 
         Glide.with(this).load(biying).into(bingimg);
         Glide.with(this).load(biying).into(bingimg1);
+        float al = (float) 0.5;
+        //bingimg.setImageAlpha(100);
+        //bingimg1.setImageAlpha(70);
+        //Toast.makeText(this,"img",Toast.LENGTH_SHORT).show();
     }
 }

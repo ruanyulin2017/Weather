@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 MainActivity.this.finish();
             }
-        },1000);
+        },0);
 /*
         getFlag();
         if (preferences.getString("weather",null) != null && flag == 0){
