@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">简单天气</string>
     <string name="version">version 1.0</string>
+    <string name="danwei">合工大</string>
+    <string name="auther">ruanyulin</string>
+    <string name="GitHub"><u>GitHub</u></string>
+    <string name="github">https://github.com/ruanyulin2017/Weather</string>
 </resources>

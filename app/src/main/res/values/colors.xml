@@ -8,4 +8,5 @@
     <color name="white1">#c0c0c0</color>
     <color name="red">#8b0000</color>
     <color name="divier">#808080</color>
+    <color name="clicked">#8b008b</color>
 </resources>

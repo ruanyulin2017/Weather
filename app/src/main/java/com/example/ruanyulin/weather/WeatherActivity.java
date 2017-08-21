@@ -1,6 +1,7 @@
 package com.example.ruanyulin.weather;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -64,6 +65,7 @@ public class WeatherActivity extends AppCompatActivity {
 
 
     private Button selectcity;
+    private Button about;
 
     private ImageView bingimg;
 
@@ -98,6 +100,7 @@ public class WeatherActivity extends AppCompatActivity {
 
         warn = (TextView) findViewById(R.id.warntext);
         selectcity = (Button) findViewById(R.id.selectbutton);
+        about = (Button) findViewById(R.id.aboutbutton);
 
         scrollView = (ScrollView) findViewById(R.id.weatherlayout);
         titlecity = (TextView) findViewById(R.id.titlecity);
@@ -123,14 +126,14 @@ public class WeatherActivity extends AppCompatActivity {
         selectcity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*final int flag1 = 1;
-                Intent intent = new Intent(WeatherActivity.this,MainActivity.class);
-                intent.putExtra("flag",flag1);
-                //Toast.makeText(WeatherActivity.this,"select",Toast.LENGTH_SHORT).show();
-                startActivity(intent);
-                //finish();*/
                 drawerLayout.openDrawer(GravityCompat.START);
-
+            }
+        });
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(WeatherActivity.this,Aboutme.class);
+                startActivity(intent);
             }
         });
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
