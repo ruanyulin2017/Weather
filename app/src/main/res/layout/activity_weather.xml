@@ -1,43 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorPrimary"
+
+    android:background="@color/black1"
     android:orientation="vertical"
-    android:fitsSystemWindows="true"
+
 
     tools:context="com.example.ruanyulin.weather.WeatherActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/bingimg1"
+        android:scaleType="centerCrop"/>
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <FrameLayout
+
+
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/bingimg"
-                android:scaleType="centerCrop"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-    <include layout="@layout/title"/>
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/bingimg1"
-
-            android:scaleType="centerCrop"/>
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+        <include layout="@layout/title"/>
         <android.support.v4.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -48,7 +38,6 @@
             android:layout_height="match_parent"
             android:id="@+id/weatherlayout"
             android:scrollbars="none"
-                android:fitsSystemWindows="true"
             android:overScrollMode="never">
 
                 <LinearLayout
@@ -69,9 +58,9 @@
                 </LinearLayout>
             </ScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>
-    </FrameLayout>
-    </LinearLayout>
-        </FrameLayout>
+        </LinearLayout>
+
+
         <fragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -80,4 +69,4 @@
             android:id="@+id/fragment"/>
 
     </android.support.v4.widget.DrawerLayout>
-</LinearLayout>
+</FrameLayout>

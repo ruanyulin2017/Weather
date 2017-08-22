@@ -78,7 +78,6 @@ public class WeatherActivity extends AppCompatActivity {
     private Button selectcity;
     private Button about;
 
-    private ImageView bingimg;
 
     private ImageView bingimg1;
 
@@ -134,13 +133,13 @@ public class WeatherActivity extends AppCompatActivity {
         carwashtext = (TextView) findViewById(R.id.carwashtext);
         sporttext = (TextView) findViewById(R.id.sporttext);
 
-        bingimg = (ImageView) findViewById(R.id.bingimg);
         bingimg1 = (ImageView) findViewById(R.id.bingimg1);
         imageView = (ImageView) findViewById(R.id.chooseimg);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
 
-        glideimg();
+        glideimg(2);
+
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
 
@@ -165,7 +164,7 @@ public class WeatherActivity extends AppCompatActivity {
         String weatherId = null;
 
         //bingimg.setImageAlpha(100);
-        bingimg1.setImageAlpha(150);
+        bingimg1.setImageAlpha(200);
 
 
         if (weatherString != null ){
@@ -280,18 +279,18 @@ public class WeatherActivity extends AppCompatActivity {
         life5.setText("运动指数");
         forecastlayout.removeAllViews();
         //获取日期
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar calendar = Calendar.getInstance();
-        String date;
+        //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        //Calendar calendar = Calendar.getInstance();
+        //String date;
 
         if (Integer.parseInt(degree1) < 10) {
             warn.setText("天气寒冷，请注意保暖");
             life4.setText("宜穿冬衣");
-        } else if (Integer.parseInt(degree1) >= 10 &&Integer.parseInt(degree1) <= 30) {
+        } else if (Integer.parseInt(degree1) >= 10 &&Integer.parseInt(degree1) < 30) {
             warn.setText("天气很舒适");
             life4.setText("宜穿秋衣");
         } else
-        if (Integer.parseInt(degree1) > 30 ) {
+        if (Integer.parseInt(degree1) >= 30 ) {
             if (Integer.parseInt(degree1) > 37) {
                 warn.setTextColor(getColor(R.color.red));
                 warn1.setTextColor(getColor(R.color.red));
@@ -304,15 +303,25 @@ public class WeatherActivity extends AppCompatActivity {
         }
 
         if (weatherinfo.indexOf("雨") != -1) {
+            if (weatherinfo.indexOf("暴雨") != -1) {
+                warn.setTextColor(getColor(R.color.red));
+                warn1.setTextColor(getColor(R.color.red));
+                warn1.setText("暴雨预警");
+                titlecity.setTextColor(getColor(R.color.red));
+            }
+            glideimg(1);
             life2.setText("不宜出门");
             life6.setText("不宜运动");
         } else if (weatherinfo.indexOf("晴") != -1) {
+            glideimg(2);
             life2.setText("注意防晒");
             life6.setText("不宜运动");
         } else if (weatherinfo.indexOf("多云") != -1) {
+            glideimg(3);
             life2.setText("适合出门");
             life6.setText("适合运动");
         } else if (weatherinfo.indexOf("阴") != -1) {
+            glideimg(4);
             life2.setText("适宜出门");
             life6.setText("适宜运动");
         }
@@ -322,7 +331,7 @@ public class WeatherActivity extends AppCompatActivity {
             TextView datetext = (TextView) view.findViewById(R.id.datetext);
             TextView infotext  = (TextView) view.findViewById(R.id.infotext);
             TextView maxtext = (TextView) view.findViewById(R.id.maxtext);
-            date = simpleDateFormat.format(calendar.getTime());
+            //date = simpleDateFormat.format(calendar.getTime());
             if (i== 0) {
                 datetext.setText("今天" + "(" + forecast.date +")");
                 if (forecast.more.info.indexOf("晴") != -1) {
@@ -358,22 +367,25 @@ public class WeatherActivity extends AppCompatActivity {
         }
     }
 
-    protected void glideimg(){
-
-        long time = System.currentTimeMillis();
-        final Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(time);
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        if (hour < 10) {
-            Glide.get(this).clearMemory();
-            Glide.get(this).clearDiskCache();
-        }
-
+    protected void glideimg(int flag){
         //choose、title、weather
-        Glide.with(this).load(biying).bitmapTransform(new BlurTransformation(WeatherActivity.this,20)).into(imageView);
-        Glide.with(this).load(biying).bitmapTransform(new BlurTransformation(WeatherActivity.this,30)).into(bingimg);
-        Glide.with(this).load(biying).bitmapTransform(new BlurTransformation(WeatherActivity.this,15)).into(bingimg1);
-
-
+        switch (flag) {
+            case 1:
+                Glide.with(this).load(R.drawable.yu).bitmapTransform(new BlurTransformation(WeatherActivity.this,20)).into(imageView);
+                Glide.with(this).load(R.drawable.yu).bitmapTransform(new BlurTransformation(WeatherActivity.this,10)).into(bingimg1);
+                break;
+            case 2:
+                Glide.with(this).load(R.drawable.qingtian).bitmapTransform(new BlurTransformation(WeatherActivity.this,20)).into(imageView);
+                Glide.with(this).load(R.drawable.qingtian).bitmapTransform(new BlurTransformation(WeatherActivity.this,10)).into(bingimg1);
+                break;
+            case 3:
+                Glide.with(this).load(R.drawable.duoyun).bitmapTransform(new BlurTransformation(WeatherActivity.this,20)).into(imageView);
+                Glide.with(this).load(R.drawable.duoyun).bitmapTransform(new BlurTransformation(WeatherActivity.this,10)).into(bingimg1);
+                break;
+            case 4:
+                Glide.with(this).load(R.drawable.yintian).bitmapTransform(new BlurTransformation(WeatherActivity.this,20)).into(imageView);
+                Glide.with(this).load(R.drawable.yintian).bitmapTransform(new BlurTransformation(WeatherActivity.this,10)).into(bingimg1);
+                break;
+        }
     }
 }
